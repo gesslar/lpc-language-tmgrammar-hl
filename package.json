@@ -1,0 +1,33 @@
+{
+  "name": "@gesslar/lpc-language-tmgrammar-hl",
+  "version": "1.0.0",
+  "license": "Unlicense",
+  "type": "module",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js",
+    "./lpc.tmLanguage.json": "./lpc.tmLanguage.json"
+  },
+  "files": [
+    "index.js",
+    "lpc.tmLanguage.json"
+  ],
+  "engines": {
+    "node": "24.14.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "lpc",
+    "textmate",
+    "grammar",
+    "syntax-highlighting",
+    "shiki"
+  ],
+  "description": "TextMate grammar for LPC (Lars Pensjö C) syntax highlighting",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gesslar/lpc-language-tmgrammar-hl.git"
+  }
+}

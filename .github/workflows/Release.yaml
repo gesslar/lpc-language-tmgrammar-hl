@@ -1,0 +1,14 @@
+name: Release
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main]
+
+jobs:
+  release:
+    uses: gesslar/Maint/.github/workflows/Release.yaml@main
+    with:
+      quality_check: ""
+    secrets:
+      NPM_GITHUB_CD_ACCESS_TOKEN: ${{ secrets.NPM_GITHUB_CD_ACCESS_TOKEN }}
