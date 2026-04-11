@@ -84,4 +84,4 @@ import grammar from "@gesslar/lpc-language-tmgrammar-hl";
 
 ## License
 
-`@gesslar/lpc-language-tmgrammar-hl` is released into the public domain under the [Unlicense](LICENSE).
+`@gesslar/lpc-language-tmgrammar-hl` is released under the [0BSD](LICENSE.txt).
