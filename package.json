@@ -1,5 +1,6 @@
 {
   "name": "@gesslar/lpc-language-tmgrammar-hl",
+  "description": "TextMate grammar for LPC (Lars Pensjö C) syntax highlighting",
   "version": "1.0.0",
   "license": "0BSD",
   "type": "module",
@@ -25,9 +26,13 @@
     "syntax-highlighting",
     "shiki"
   ],
-  "description": "TextMate grammar for LPC (Lars Pensjö C) syntax highlighting",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/gesslar/lpc-language-tmgrammar-hl.git"
+  },
+  "scripts": {
+    "patch": "npm version patch",
+    "minor": "npm version minor",
+    "major": "npm version major"
   }
 }
