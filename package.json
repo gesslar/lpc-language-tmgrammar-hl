@@ -1,7 +1,7 @@
 {
   "name": "@gesslar/lpc-language-tmgrammar-hl",
   "description": "TextMate grammar for LPC (Lars Pensjö C) syntax highlighting",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "0BSD",
   "type": "module",
   "main": "index.js",
