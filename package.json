@@ -1,7 +1,7 @@
 {
   "name": "@gesslar/lpc-language-tmgrammar-hl",
   "version": "1.0.0",
-  "license": "Unlicense",
+  "license": "0BSD",
   "type": "module",
   "main": "index.js",
   "exports": {
