@@ -2,16 +2,14 @@ name: Release
 
 on:
   pull_request:
-    types: [closed]
-    branches: [main]
+    types: [ closed ]
+    branches: [ main ]
 
 jobs:
   release:
-    if: github.event.pull_request.merged == true
+    if: ${{ github.event.pull_request.merged == true }}
     uses: gesslar/Maint/.github/workflows/Release.yaml@main
     with:
       quality_check: ""
-    secrets:
-      NPM_GITHUB_CD_ACCESS_TOKEN: ${{ secrets.NPM_GITHUB_CD_ACCESS_TOKEN }}
     permissions:
       contents: write
