@@ -6,7 +6,7 @@ on:
     branches: [ main ]
 
 jobs:
-  Release:
+  release:
     if: ${{ github.event.pull_request.merged == true }}
     uses: gesslar/Maint/.github/workflows/Release.yaml@main
     secrets: inherit
