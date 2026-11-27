@@ -7,11 +7,13 @@
   "main": "index.js",
   "exports": {
     ".": "./index.js",
-    "./lpc.tmLanguage.json": "./lpc.tmLanguage.json"
+    "./lpc.tmLanguage.json": "./lpc.tmLanguage.json",
+    "./lpcdoc.injection.tmLanguage.json": "./lpcdoc.injection.tmLanguage.json"
   },
   "files": [
     "index.js",
-    "lpc.tmLanguage.json"
+    "lpc.tmLanguage.json",
+    "lpcdoc.injection.tmLanguage.json"
   ],
   "engines": {
     "node": ">=24"
@@ -34,6 +36,6 @@
     "patch": "npm version patch",
     "minor": "npm version minor",
     "major": "npm version major",
-    "sync-grammar": "tag=$(gh api repos/jlchmura/lpc-language-server/releases/latest --jq .tag_name) && echo \"Syncing grammar from $tag\" && curl -fsSL \"https://raw.githubusercontent.com/jlchmura/lpc-language-server/$tag/syntaxes/lpc.tmLanguage.json\" -o lpc.tmLanguage.json"
+    "sync-grammar": "tag=$(gh api repos/jlchmura/lpc-language-server/releases/latest --jq .tag_name) && echo \"Syncing grammars from $tag\" && for f in lpc.tmLanguage.json lpcdoc.injection.tmLanguage.json; do curl -fsSL \"https://raw.githubusercontent.com/jlchmura/lpc-language-server/$tag/syntaxes/$f\" -o \"$f\" || exit 1; done"
   }
 }

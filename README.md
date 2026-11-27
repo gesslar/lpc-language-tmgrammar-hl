@@ -12,15 +12,20 @@ npm install @gesslar/lpc-language-tmgrammar-hl
 
 ## Usage
 
+The package ships two grammars:
+
+- `lpc.tmLanguage.json`: the main LPC grammar (scope `source.lpc.lang-server`), which is the default export.
+- `lpcdoc.injection.tmLanguage.json`: an injection grammar (scope `documentation.injection.lpc`) that adds Markdown formatting, fenced code blocks, and `@example` highlighting inside `/** */` doc comments. It's exported as `lpcdocGrammar`, with `injectTo` already set for Shiki. It includes rules from the Markdown grammar, so load `markdown` alongside it.
+
 ### Shiki (standalone)
 
 ```js
 import { createHighlighter } from "shiki";
-import lpcGrammar from "@gesslar/lpc-language-tmgrammar-hl";
+import lpcGrammar, { lpcdocGrammar } from "@gesslar/lpc-language-tmgrammar-hl";
 
 const highlighter = await createHighlighter({
   themes: ["github-dark"],
-  langs: [lpcGrammar],
+  langs: ["markdown", lpcGrammar, lpcdocGrammar],
 });
 
 const html = highlighter.codeToHtml(code, { lang: "lpc", theme: "github-dark" });
@@ -31,12 +36,12 @@ const html = highlighter.codeToHtml(code, { lang: "lpc", theme: "github-dark" })
 In `astro.config.mjs`:
 
 ```js
-import lpcGrammar from "@gesslar/lpc-language-tmgrammar-hl";
+import lpcGrammar, { lpcdocGrammar } from "@gesslar/lpc-language-tmgrammar-hl";
 
 export default defineConfig({
   markdown: {
     shikiConfig: {
-      langs: [lpcGrammar],
+      langs: ["markdown", lpcGrammar, lpcdocGrammar],
     },
   },
   // Or, if using Starlight with Expressive Code:
@@ -44,7 +49,7 @@ export default defineConfig({
     starlight({
       expressiveCode: {
         shiki: {
-          langs: [lpcGrammar],
+          langs: ["markdown", lpcGrammar, lpcdocGrammar],
         },
       },
     }),
@@ -62,8 +67,13 @@ In your extension's `package.json`:
     "grammars": [
       {
         "language": "lpc",
-        "scopeName": "source.lpc",
+        "scopeName": "source.lpc.lang-server",
         "path": "./node_modules/@gesslar/lpc-language-tmgrammar-hl/lpc.tmLanguage.json"
+      },
+      {
+        "scopeName": "documentation.injection.lpc",
+        "path": "./node_modules/@gesslar/lpc-language-tmgrammar-hl/lpcdoc.injection.tmLanguage.json",
+        "injectTo": ["source.lpc.lang-server"]
       }
     ]
   }
@@ -74,12 +84,15 @@ In your extension's `package.json`:
 
 ```js
 import grammar from "@gesslar/lpc-language-tmgrammar-hl/lpc.tmLanguage.json" with { type: "json" };
+import lpcdoc from "@gesslar/lpc-language-tmgrammar-hl/lpcdoc.injection.tmLanguage.json" with { type: "json" };
 ```
+
+The raw injection file has no `name` or `injectTo`. Upstream sets those in its VS Code `package.json`, not in the grammar file. Use `lpcdocGrammar` for Shiki, or add them yourself.
 
 Or via the default export:
 
 ```js
-import grammar from "@gesslar/lpc-language-tmgrammar-hl";
+import grammar, { lpcdocGrammar } from "@gesslar/lpc-language-tmgrammar-hl";
 ```
 
 ## License
