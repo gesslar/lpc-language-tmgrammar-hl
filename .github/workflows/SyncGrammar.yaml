@@ -1,0 +1,60 @@
+name: Sync Grammar
+
+on:
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  SyncGrammar:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Fetch grammar from latest upstream release
+        id: sync
+        run: |
+          tag=$(gh api repos/jlchmura/lpc-language-server/releases/latest --jq .tag_name)
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          npm run sync-grammar
+          if git diff --quiet -- lpc.tmLanguage.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Open PR
+        if: steps.sync.outputs.changed == 'true'
+        env:
+          TAG: ${{ steps.sync.outputs.tag }}
+        run: |
+          branch="sync-grammar/$TAG"
+          if git ls-remote --exit-code --heads origin "$branch" > /dev/null; then
+            echo "Branch $branch already exists; skipping."
+            exit 0
+          fi
+
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          npm version patch --no-git-tag-version
+          git switch -c "$branch"
+          git add lpc.tmLanguage.json package.json package-lock.json
+          git commit -m "Sync grammar from lpc-language-server $TAG"
+          git push origin "$branch"
+
+          gh pr create \
+            --base main \
+            --head "$branch" \
+            --title "Sync grammar from lpc-language-server $TAG" \
+            --body "Updates \`lpc.tmLanguage.json\` from [jlchmura/lpc-language-server $TAG](https://github.com/jlchmura/lpc-language-server/releases/tag/$TAG) and bumps the patch version so the Release workflow publishes on merge."

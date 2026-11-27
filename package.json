@@ -33,6 +33,7 @@
   "scripts": {
     "patch": "npm version patch",
     "minor": "npm version minor",
-    "major": "npm version major"
+    "major": "npm version major",
+    "sync-grammar": "tag=$(gh api repos/jlchmura/lpc-language-server/releases/latest --jq .tag_name) && echo \"Syncing grammar from $tag\" && curl -fsSL \"https://raw.githubusercontent.com/jlchmura/lpc-language-server/$tag/syntaxes/lpc.tmLanguage.json\" -o lpc.tmLanguage.json"
   }
 }
